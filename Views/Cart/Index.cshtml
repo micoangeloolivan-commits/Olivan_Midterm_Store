@@ -1,59 +1,52 @@
-@model IEnumerable<Olivan_Midterm_Store.Models.CartItem>
+@model List<Olivan_Midterm_Store.Models.CartItem>
 
-@{
-    ViewData["Title"] = "Shopping Cart";
-}
+@{ ViewData["Title"] = "CartItem"; }
 
-<h1>Shopping Cart</h1>
+ 
+
+<h1>Cart_Items</h1>
+
+<a asp-action="Create" class="btn btn-primary mb-3">+ Add Items</a>
+
+ 
 
 <table class="table table-bordered">
+
     <thead>
+
         <tr>
-            <th>Product Name</th>
+            <th>Id</th>
+            <th>ProductId</th>
+            <th>ProductName</th>
             <th>Price</th>
             <th>Quantity</th>
-            <th>Subtotal</th>
-            <th>Action</th>
+            <th>Actions</th>
         </tr>
+
     </thead>
 
     <tbody>
-        @foreach (var item in Model)
+
+        @foreach (var p in Model)
+
         {
+
             <tr>
-                <td>@item.ProductName</td>
-
+                <td>@p.Id</td>
+                <td>@p.ProductId</td>
+                <td>@p.ProductName</td>
+                <td>@p.Price</td>
+                <td>@p.Quantity</td>
                 <td>
-                    ₱@item.Price.ToString("N2")
-                </td>
-
-                <td>
-                    @item.Quantity
-                </td>
-
-                <td>
-                    ₱@((item.Price * item.Quantity).ToString("N2"))
-                </td>
-
-                <td>
-                    <a asp-action="Edit"
-                       asp-route-id="@item.Id"
-                       class="btn btn-warning">
-                        Edit
-                    </a>
-
-                    <a asp-action="Delete"
-                       asp-route-id="@item.Id"
-                       class="btn btn-danger">
-                        Remove
-                    </a>
+                    <a asp-action="Edit" asp-route-id="@p.Id" class="btn btn-sm btn-warning">Edit</a>
+                    <a asp-action="Delete" asp-route-id="@p.Id" class="btn btn-sm btn-danger"
+                       onclick="return confirm('Delete this product?')">Delete</a>
                 </td>
             </tr>
+
         }
+
     </tbody>
+
 </table>
 
-<h3>
-    Total:
-    ₱@Model.Sum(item => item.Price * item.Quantity).ToString("N2")
-</h3>

@@ -28,5 +28,34 @@ namespace Olivan_Midterm_Store.Controllers
             return View(cart);
 
         }
+
+        // EDIT - show the edit form
+        public IActionResult Edit(int id)
+        {
+            var product = _db.Products.Find(id);
+            if (product == null) return RedirectToAction("Index");
+            return View(product);
+        }
+
+        // EDIT - save the changes
+        [HttpPost]
+        public IActionResult Edit(CartItem cart)
+        {
+            _db.Cart_Items.Update(cart);
+            _db.SaveChanges();
+            return RedirectToAction("Index");
+        }
+
+        // DELETE - remove the product
+        public IActionResult Delete(int id)
+        {
+            var cart = _db.Cart_Items.Find(id);
+            if (cart != null)
+            {
+                _db.Cart_Items.Remove(cart);
+                _db.SaveChanges();
+            }
+            return RedirectToAction("Index");
+        }
     }
 }

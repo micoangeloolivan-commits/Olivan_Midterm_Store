@@ -1,0 +1,15 @@
+@model Olivan_Midterm_Store.Models.CartItem
+@{ ViewData["Title"] = "Edit Cart"; }
+
+<h1>Edit Product</h1>
+<form asp-action="Edit" method="post">
+    <input type="hidden" asp-for="Id" />
+
+    <div class="mb-3">
+        <label>Quantity</label>
+        <input asp-for="Quantity" class="form-control" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Save</button>
+    <a asp-action="Index" class="btn btn-secondary">Back</a>
+</form>
