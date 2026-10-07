@@ -18,20 +18,6 @@ namespace Olivan_Midterm_Store.Controllers
 
  
 
-        // shows the list
-
-        public IActionResult Index()
-
-        {
-
-            var products = _db.Products.ToList();
-
-            return View(products);
-
-        }
-
- 
-
         // shows the empty add-form
 
         public IActionResult Create()
@@ -87,6 +73,19 @@ namespace Olivan_Midterm_Store.Controllers
                 _db.SaveChanges();
             }
             return RedirectToAction("Index");
+        }
+
+        public IActionResult Index(string searchString)
+        {
+        var products = _db.Products.AsQueryable();
+
+        if (!string.IsNullOrEmpty(searchString))
+        {
+            products = products.Where(p => p.Name.ToLower().Contains(searchString));
+        }
+
+        ViewData["searchString"] = searchString;
+        return View(products.ToList());
         }
 
     }

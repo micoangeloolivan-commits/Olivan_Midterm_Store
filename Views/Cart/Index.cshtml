@@ -6,8 +6,6 @@
 
 <h1>Cart_Items</h1>
 
-<a asp-action="Create" class="btn btn-primary mb-3">+ Add Items</a>
-
  
 
 <table class="table table-bordered">
@@ -15,15 +13,22 @@
     <thead>
 
         <tr>
-            <th>Id</th>
-            <th>ProductId</th>
-            <th>ProductName</th>
+            <th>ID</th>
+            <th>Product ID</th>
+            <th>Product Name</th>
             <th>Price</th>
             <th>Quantity</th>
             <th>Actions</th>
         </tr>
 
     </thead>
+
+    <form asp-action="Index" method="get" class="mb-3">
+            <input type="text" name="searchString" value="@ViewData["searchString"]"
+               placeholder="Search item name..." />
+            <button type="submit">Search</button>
+        <a asp-action="Index">Clear</a>
+    </form>
 
     <tbody>
 
@@ -38,15 +43,29 @@
                 <td>@p.Price</td>
                 <td>@p.Quantity</td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@p.Id" class="btn btn-sm btn-warning">Edit</a>
-                    <a asp-action="Delete" asp-route-id="@p.Id" class="btn btn-sm btn-danger"
-                       onclick="return confirm('Delete this product?')">Delete</a>
+                    <a asp-action="Edit" 
+                    asp-route-id="@p.Id" 
+                    class="btn btn-sm btn-warning">
+                    Edit
+                    </a>
+
+                    <a asp-action="Delete" 
+                    asp-route-id="@p.Id" 
+                    class="btn btn-sm btn-danger"
+                    onclick="return confirm('Delete this Item?')">
+                    Delete
+                    </a>
                 </td>
             </tr>
 
         }
 
+
     </tbody>
 
 </table>
 
+<h1>
+    Total:
+    $@Model.Sum(item => item.Price * item.Quantity).ToString("N2")
+</h1>

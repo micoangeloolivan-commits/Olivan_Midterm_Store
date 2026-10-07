@@ -15,26 +15,13 @@ namespace Olivan_Midterm_Store.Controllers
 
         public CartController(ApplicationDbContext db) { _db = db; }
 
- 
-
-        // shows the list
-
-        public IActionResult Index()
-
-        {
-
-            var cart = _db.Cart_Items.ToList();
-
-            return View(cart);
-
-        }
 
         // EDIT - show the edit form
         public IActionResult Edit(int id)
         {
-            var product = _db.Products.Find(id);
-            if (product == null) return RedirectToAction("Index");
-            return View(product);
+            var cart = _db.Cart_Items.Find(id);
+            if (cart == null) return RedirectToAction("Index");
+            return View(cart);
         }
 
         // EDIT - save the changes
@@ -57,5 +44,42 @@ namespace Olivan_Midterm_Store.Controllers
             }
             return RedirectToAction("Index");
         }
+
+        public IActionResult AddToCart(int id)
+        {
+        var product = _db.Products.Find(id);
+
+        if (product == null)
+        {
+            return NotFound();
+        }
+
+        var cartItem = new CartItem
+        {
+            ProductId = product.Id,
+            ProductName = product.Name,
+            Price = product.Price,
+            Quantity = 1
+        };
+
+        _db.Cart_Items.Add(cartItem);
+        _db.SaveChanges();
+
+        return RedirectToAction("Index");
+        }
+
+        public IActionResult Index(string searchString)
+        {
+        var cart = _db.Cart_Items.AsQueryable();
+
+        if (!string.IsNullOrEmpty(searchString))
+        {
+            cart = cart.Where(p => p.ProductName.ToLower().Contains(searchString));
+        }
+
+        ViewData["searchString"] = searchString;
+        return View(cart.ToList());
+        }
+
     }
 }
